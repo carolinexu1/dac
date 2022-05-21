@@ -1,2 +1,4 @@
 # dac
 HackTJ 9.0 Submission
+
+Bus zoning and regional transportation requires major coordination. The number of stops per region is limited by finance, each area has a gradient of population densities, and it can be near impossible for governments to decide where to place their transit stops. That’s why we created NextStopTransit. This web app uses the census tract data from 2017 which has the population of every tract of every county of every state in the entire US. The user simply inputs the desired state and county as well as the number of stops for this county and our algorithm decides how many stops each tract should get based on population density, optimizing placement so that each stop has roughly the same amount of people. The applications are limitless: school bus zoning, public bus stops, bullet trains, and so much more.
