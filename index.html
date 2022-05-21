@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<link rel="stylesheet" href="views/main.css">
+    	<style>
+            .dropbtn {
+                background-color: #4cbfa6;
+                color: white;
+                padding: 16px;
+                font-size: 16px;
+                border: none;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f1f1f1;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+            .dropdown-content a {
+              color: black;
+              padding: 12px 16px;
+              text-decoration: none;
+              display: block;
+            }
+            .dropdown-content a:hover {background-color: #ddd;}
+            
+            .dropdown:hover .dropdown-content {display: block;}
+            
+            .dropdown:hover .dropbtn {background-color: #44ab95;}
+            
+            .button-52 {
+                  font-size: 16px;
+                  font-weight: 200;
+                  color: white;
+                  letter-spacing: 1px;
+                  padding: 13px 20px 13px;
+                  outline: 0;
+                  border: 1px solid black;
+                  cursor: pointer;
+                  position: relative;
+                  background-color: rgba(0, 0, 0, 0);
+                  user-select: none;
+                  -webkit-user-select: none;
+                  touch-action: manipulation;
+                }
+                .button-52:after {
+                  content: "";
+                  background-color: #4CBFA6;
+                  width: 100%;
+                  z-index: -1;
+                  position: absolute;
+                  height: 100%;
+                  top: 7px;
+                  left: 7px;
+                  transition: 0.2s;
+                }
+                
+                .button-52:hover:after {
+                  top: 0px;
+                  left: 0px;
+                }
+                
+                @media (min-width: 768px) {
+                  .button-52 {
+                    padding: 13px 50px 13px;
+                  }
+                }
+                table, th, td {
+                    border: 1px solid #4CBFA6;
+                    text-align:center;
+                }
+                th, td {
+                    text-align:center;
+                    padding: 10px;
+                }
+
+            </style>
+    	<title>Transit Stops</title>   
+    </head>
+    <body style="color:#ed0b70; background-color:#f6ebf4; text-align:center; font-family: Trebuchet MS, sans-serif">
+        <h2>Next Stop Transit</h2>
+        <p style="color:#ed0b70">Hi! This is a site created by <span><b>Ann, Caroline, Dhatri, and Kaavya</b></span> as part of our submission for HackTJ 9.0. The purpose of our project is to distribute transit stops so that the amount of stops is proportionate to the population in an area. Please enter the county and state to place bus stops in and then the total number of transit stops that the county can afford to provide.</p><br>
+        <p style="color:#ed0b70"> DISCLAIMER: Make sure to capitalize the state and county name and if the county ends with 'County', add the word County</p>
+	    <div>
+            <label for="state"><span>What state?</span></label><br>
+            <input type = "text" id = "state"><br> <br>            
+            <label for="county"><span>What county?</span></label><br> 
+            <input type = "text" id = "county"><br> <br>
+        </div>
+            <label for="bus"><span>How many transit stops?</span></label><br>
+            <input type = "text" id = "bus"><br> <br>
+            <button class="button-52" onClick="fetchFromServer()">Submit</button>
+        </form>
+        <br>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var info;
+        function fetchFromServer() {
+            var state = $('#state').val();
+            var county = $('#county').val();
+            var bus = $('#bus').val();
+
+            var apiUrl = 'https://ywteh72t7itthnvwxu7mzec33a0gfock.lambda-url.us-east-1.on.aws/?state='+state+'&county='+county+'&bus='+bus;
+            //fetch(apiUrl + new URLSearchParams({foo: 'value', bar: 2, }))
+            //req.query.state
+            //req.query.county
+            //req.query.bus
+            console.log("a")
+            fetch(apiUrl).then(response => {
+              console.log("recieved response")
+              return response.json();
+            }).then(data => {
+                console.log("recieved data")
+              // Work with JSON data here
+              console.log(data);
+              info = data;
+              $("#numOfStops").text(info[1]); 
+              $('#result').html('<table id="getfive"></table>'); 
+              var trHTML = '';
+            
+              $.each(Object.keys(info[0]), function (i, item) {
+                  
+                  trHTML += '<tr><td>' + item + '</td><td>' + info[0][item]  + '</td><td>' + info[2][item] + '</td></tr>';
+              });
+              
+              $('#resultTable').append(trHTML);
+            });
+        }
+
+        </script>
+        </div>
+            <div id="test">
+                <h3>Excess Number of Stops:<span id="numOfStops"></span></h3>
+                <table id="resultTable">
+                    <tr>
+                        <th>Tract ID</th>
+                        <th>Total Maximum Number of Transit Stops</th>
+                        <th>Our Recommendations for Number of Transit Stops</th>
+                    </tr>
+                </table>
+            </div>
+        </div>  
+    </body>
+</html>
